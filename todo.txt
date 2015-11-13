@@ -4,3 +4,4 @@ SunRPC Server: http://remotetea.sourceforge.net/
 Mac OS X 10.6 Calls BOOTPARAMS WHOAMI if booted with Type=Classic
 
 - restructure to use libraries from maven central or so
+- Implement proper packet splitting. We currently put 2 bootable image selections in one packet. If some of the strings are too long the packet gets too big.
