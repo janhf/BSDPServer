@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="build" name="BSDPServer">
+ <target name="javadocExtern" description="Erstellt die interne Javadoc Dokumentation">
+  <mkdir dir="doc-external"/>
+  <javadoc access="public" author="true" classpath="bin" destdir="doc-external" doctitle="Bklosr Documentation" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="*" sourcepath="src" splitindex="true" use="true" version="true">
+   <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
+  </javadoc>
+ </target>
+ <target name="javadocIntern" description="Erstellt die externe Javadoc Dokumentation">
+  <mkdir dir="doc-internal"/>
+  <javadoc access="private" author="true" classpath="bin" destdir="doc-internal" doctitle="Bklosr Documentation" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="*" sourcepath="src" splitindex="true" use="true" version="true">
+   <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
+  </javadoc>
+ </target>
+ 
+ <target name="compile" description="Kompiliert den Source Code">
+  <mkdir dir="bin"/>
+  <javac srcdir="./src/" destdir="./bin/" classpath="" extdirs="./lib"/>
+  <copy todir="./bin/">
+    <fileset dir="./src/">
+      <exclude name="**/*.java"/>
+    </fileset>
+  </copy>
+ </target>
+ <target name="jar" depends="compile,signlibs" description="Erstellt die .jar-Datei">
+  <mkdir dir="jar"/>
+  <jar destfile="jar/BSDPServer.jar" basedir="./bin/" compress="yes">
+    <manifest>
+      <attribute name="Built-By" value="${user.name}" />
+      <attribute name="Main-Class" value="de.upb.phys.bsdpd.BSDPServer" />
+      <attribute name="Class-Path" value="lib/xercesImpl.jar" />
+    </manifest>
+  </jar>
+  <copy todir="./jar/">
+   <fileset dir=".">
+   	<include name="**/*.jnlp"/>
+   	<include name="**/*.sh"/>
+   </fileset>
+  </copy>
+  <signjar jar="./jar/BSDPServer.jar" alias="jp" storepass="jp" keystore="./selfsigned.jks" keypass="password" verbose="false"/>
+ </target>
+
+ <target name="signlibs" description="Sign the libraries used by the programm">
+  <mkdir dir="jar"/>
+  <mkdir dir="jar/lib"/>
+  <copy todir="./jar/lib/">
+   <fileset dir="./lib/">
+   	<include name="**/*.jar"/>
+   </fileset>
+  </copy>
+  <signjar jar="./jar/lib/*.jar" alias="jp" storepass="jp" keystore="./selfsigned.jks" keypass="password" verbose="false"/>
+ </target>
+ 
+ <target name="build" depends="compile,jar" description="Kompiliert,Erstellt .jar,Erstellt javadoc">
+ </target>
+ <target name="javadoc" depends="javadocIntern,javadocExtern" description="Erstellt die interne und die externe Javadoc-Dokumentation">
+ </target>
+ <target name="clean" description="Löscht alle erstellten Dateien">
+  <delete dir="./jar/" />
+  <delete dir="./bin/" />
+  <delete dir="./doc-external/" />
+  <delete dir="./doc-internal/" />
+ </target>
+ <target name="rebuilt" depends="clean,compile,jar,javadoc" description="Erstellt das gesamte Projekt erneut. (Alles löschen, alles erstellen)">
+ </target> 
+ <target name="runjar" depends="compile,jar" description="Führt das .jar-Archiv aus.">
+  <java jar="./jar/BSDPServer.jar" fork="true" dir="./jar"/>
+ </target>
+ <target name="run" depends="runjar" description="Führt das Projekt aus. (runjar)">
+ </target>
+</project>

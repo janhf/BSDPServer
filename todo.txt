@@ -1,0 +1,6 @@
+
+
+SunRPC Server: http://remotetea.sourceforge.net/
+Mac OS X 10.6 Calls BOOTPARAMS WHOAMI if booted with Type=Classic
+
+- restructure to use libraries from maven central or so

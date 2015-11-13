@@ -1,0 +1,6 @@
+GPL Code:
+
+edu.bucknell.net.JDHCP.* - Code which was obtained and then modified from jDHCP Project
+plistreader.* - Code from the university of antwerp
+
+Own Code is licensed under the GPLv3.
